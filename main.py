@@ -1,33 +1,26 @@
 from Wedding import *
-from Table import *
-from Person import *
-from Group import *
-import csv
 
 wedding = Wedding()
 
 
 wedding.start()
-max_seats = wedding.query_max_seats()
+wedding.max_seats = wedding.queryMaxSeats()
+wedding.openCSV()
+wedding.create_main_tables()
+wedding.create_remaining_tables()
+wedding.assign_couples_to_tables()
+
+# for table in wedding.tables:
+#     number = len(table.people)    
+#     if wedding.max_seats - 1 >= number:
+#         for person1 in wedding.unassigned_people:
+#             for person2 in wedding.unassigned_people:
+#                 if person1 not in table.people or person2 not in table.people:
+#                     if person1.name == person2.spouse:
+#                         table.addPerson(person1)
+#                         table.addPerson(person2)
+#                         wedding.removePerson(person1)
+#                         wedding.removePerson(person2)
 
 
-csv_file = open('input.csv', 'r')
-csv_reader = csv.reader(csv_file)
-for name, age, spouse in csv_reader:
-    if name == "NAME": continue
-
-    print(name, age, spouse)
-
-    wedding.addPerson(Person(name, age, spouse))
-
-
-length = len(wedding.unassigned_people)
-# for i in
-table = Table()
-wedding.addTable(table)
-for person1 in wedding.unassigned_people:
-    for person2 in wedding.unassigned_people:
-        if person1.name == person2.spouse:
-
-            table.addPerson(person1)
-            table.addPerson(person2)
+# add more entries

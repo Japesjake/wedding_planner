@@ -1,0 +1,1 @@
+This program automatically assigns guests to tables based on information provided.

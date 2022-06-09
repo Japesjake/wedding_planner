@@ -1,10 +1,9 @@
 from Wedding import *
 
-class Table(Wedding):
-    def __init__(self):
+class Table():
+    def __init__(self, seats):
         self.people = []
-        self.seats = 0
-        # super().__init__(max_seats)
+        self.seats = seats
     def addPerson(self, person):
         self.people.append(person)
     def isFull(self, table):
