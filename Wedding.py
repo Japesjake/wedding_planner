@@ -40,52 +40,9 @@ class Wedding:
 
     # Creates tables
     def create_tables(self):
-        max_seats = self.max_seats
-        people = len(self.unassigned_people)
-        tables = people // max_seats
-        leftover_people = people % max_seats
-        full_tables = tables - leftover_people
-        not_full_tables = tables - full_tables
-        for i in range(full_tables):
-            table = Table(max_seats, i)
-            print(table.max_people, ":", table.id)
-        for i in range(full_tables, not_full_tables + 1):
-            table = Table(max_seats - 1, i)
-            print(table.max_people, ":", table.id)
-    # Creates tables with max seats
-    def create_main_tables(self):
-        people = len(self.unassigned_people)
-        main = people // self.max_seats
-        for i in range(main):
+        num_people = len(self.unassigned_people)
+        tables = (num_people // self.max_seats) + (num_people % self.max_seats > 0)
+        for i in range(tables):
             table = Table(self.max_seats, i)
             self.add_table(table)
-            self.last_id = i
-            print(table.id)
-        print("less")
-
-    # Creates tables with less than max seats
-    def create_remaining_tables(self):
-        people = len(self.unassigned_people)
-        leftover = people % self.max_seats
-        for i in range(leftover):
-            max_seats = self.max_seats - 1
-            table = Table(max_seats, i + self.last_id + 1)
-            self.add_table(table)
-            
-            print(table.id)
-
-    def assign_couples_to_tables(self):
-        for table in self.tables:
-            number = len(table.people)    
-            if self.max_seats - 1 >= number:
-                for person1 in self.unassigned_people:
-                    for person2 in self.unassigned_people:
-                        if person1 not in table.people or person2 not in table.people:
-                            if person1.name == person2.spouse:
-                                table.add_person(person1)
-                                table.add_person(person2)
-                                self.remove_person(person1)
-                                self.remove_person(person2)
-            # for person in table.people:
-            #     print(person.name)
-        # print("singles")
+            # print(table.id, ":", table.max_seats)

@@ -1,6 +1,7 @@
 NAME,AGE,SPOUSE
-Mark Jaquith,adult,Sarah Jaquith
-Sarah Jaquith,adult,Mark Jaquith
+Mark Jaquith,adult,Bri
+Bri,adult,Mark Jaquith
+Sarah Jaquith,adult,single
 David Jaquith,adult,Diana Jaquith
 Diana Jaquith,adult,David Jaquith
 Steve Jaquith,adult,Libby Jaquith
@@ -18,3 +19,4 @@ John Paul Marchand,adult,Louise Marchand
 Louise Marchand,adult,John Paul Marchand
 John Gwaltney,adult,Andrea Gwaltney
 Andrea Gwaltney,adult,John Gwaltney
+Lance Schilling,adult,Anne Schilling
