@@ -6,6 +6,7 @@ class Wedding:
     def __init__(self):
         self.tables = []
         self.unassigned_people = []
+        self.couples = []
         self.max_seats = 0
         self.last_id = 0
     def add_table(self, table):
@@ -14,6 +15,9 @@ class Wedding:
         self.unassigned_people.append(person)
     def remove_person(self, person):
         self.unassigned_people.remove(person)
+    def add_couple(self, couple):
+        self.couples.append(couple)
+
     # asks for max seats per table.
     def query_max_seats(self):
         while True:
@@ -38,11 +42,31 @@ class Wedding:
             self.add_person(Person(name, age, spouse))
             if name == "NAME": continue
 
+    def round_up(self, numerator, divisor):
+        return int((numerator // divisor) + (numerator % divisor > 0))
+
     # Creates tables
     def create_tables(self):
         num_people = len(self.unassigned_people)
-        tables = (num_people // self.max_seats) + (num_people % self.max_seats > 0)
+        tables = self.round_up(num_people, self.max_seats)
         for i in range(tables):
             table = Table(self.max_seats, i)
             self.add_table(table)
             # print(table.id, ":", table.max_seats)
+
+    def match_couples(self):
+        for person1 in self.unassigned_people:
+            for person2 in self.unassigned_people:
+                if person1.name == person2.spouse:
+                    self.add_couple((person1, person2))
+                    self.remove_person(person1)
+                    self.remove_person(person2)
+                    for couple in self.couples:
+                        print(couple)
+    
+    # def assign_couples_to_tables(self):
+    #     for table in self.tables:
+    #         for i in range(table.max_seats // 2):
+    #             num_people = len(table.people)
+    #                 if table.max_seats > num_people:
+    #                     table.add_person()

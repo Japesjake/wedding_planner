@@ -7,8 +7,8 @@ wedding.start()
 wedding.max_seats = wedding.query_max_seats()
 wedding.open_csv()
 wedding.create_tables()
-wedding.assign_couples_to_tables()
-# wedding.assign_singles_to_tables()
+wedding.match_couples()
+# wedding.assign_couples_to_tables()
 
 # for table in wedding.tables:
 #     if wedding.max_seats > len(table.people):
