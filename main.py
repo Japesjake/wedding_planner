@@ -8,20 +8,12 @@ wedding.max_seats = wedding.query_max_seats()
 wedding.open_csv()
 wedding.create_tables()
 wedding.match_couples()
-# wedding.assign_couples_to_tables()
-
-# for table in wedding.tables:
-#     if wedding.max_seats > len(table.people):
-#         for person in wedding.unassigned_people:
-#             table.add_person(person)
-#             for person in table.people:
-#                 print(person.name, table.id)
-
+wedding.assign_couples_to_tables()
 
 # to do #
 
 # edit code to consider the situation where 
 # there are more leftovers than tables.
 
-# assign singles to to remaining seats
+# assign singles to remaining seats
 # add more entries to input.csv file

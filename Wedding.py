@@ -4,19 +4,25 @@ from Table import *
 
 class Wedding:
     def __init__(self):
-        self.tables = []
         self.unassigned_people = []
         self.couples = []
+        self.tables = []
+        self.coupled_tables = []
         self.max_seats = 0
-        self.last_id = 0
     def add_table(self, table):
         self.tables.append(table)
+    def remove_table(self, table):
+        self.tables.remove(table)
+    def couple_table(self, table):
+        self.coupled_tables.append(table)
     def add_person(self, person):
         self.unassigned_people.append(person)
     def remove_person(self, person):
         self.unassigned_people.remove(person)
     def add_couple(self, couple):
         self.couples.append(couple)
+    def remove_couple(self, couple):
+        self.couples.remove(couple)
 
     # asks for max seats per table.
     def query_max_seats(self):
@@ -61,12 +67,18 @@ class Wedding:
                     self.add_couple((person1, person2))
                     self.remove_person(person1)
                     self.remove_person(person2)
-                    for couple in self.couples:
-                        print(couple)
-    
-    # def assign_couples_to_tables(self):
-    #     for table in self.tables:
-    #         for i in range(table.max_seats // 2):
-    #             num_people = len(table.people)
-    #                 if table.max_seats > num_people:
-    #                     table.add_person()
+        # for couple in self.couples:
+        #     print(couple)
+
+    def assign_couples_to_tables(self):
+        for table in self.tables:
+            if table.max_seats > len(table.people) + 1:
+                for couple in self.couples:
+                    self.remove_couple(couple)
+                    for person in couple:
+                        table.add_person(person)
+                        
+            for person in table.people:
+                print(person.name)
+            self.remove_table(table)
+            self.couple_table(table)
