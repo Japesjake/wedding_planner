@@ -7,7 +7,6 @@ class Wedding:
         self.unassigned_people = []
         self.couples = []
         self.tables = []
-        self.coupled_tables = []
         self.max_seats = 0
     def add_table(self, table):
         self.tables.append(table)
@@ -65,20 +64,33 @@ class Wedding:
             for person2 in self.unassigned_people:
                 if person1.name == person2.spouse:
                     self.add_couple((person1, person2))
-                    self.remove_person(person1)
-                    self.remove_person(person2)
         # for couple in self.couples:
-        #     print(couple)
+        #     for person in couple:
+        #         print(person.name)
 
     def assign_couples_to_tables(self):
-        for table in self.tables:
-            if table.max_seats > len(table.people) + 1:
-                for couple in self.couples:
-                    self.remove_couple(couple)
-                    for person in couple:
-                        table.add_person(person)
+        for couple in self.couples:
+            for person in couple:
+                for table in self.tables:
+                    if person in self.unassigned_people:
+                        if table.max_seats >= len(table.people) + 1:
+                            self.remove_person(person)                                
+                            table.add_person(person)
                         
+        for table in self.tables:
             for person in table.people:
                 print(person.name)
-            self.remove_table(table)
-            self.couple_table(table)
+
+
+
+
+
+
+    # def assign_couples_to_tables(self):
+    #     for table in self.tables:
+    #         if table.max_seats >= len(table.people) + 1:
+    #             for couple in self.couples:
+    #                 self.remove_couple(couple)
+    #                 for person in couple:
+    #                     table.add_person(person)
+            # print(table)

@@ -15,5 +15,5 @@ wedding.assign_couples_to_tables()
 # edit code to consider the situation where 
 # there are more leftovers than tables.
 
-# assign singles to remaining seats
+# assign singles to to remaining seats
 # add more entries to input.csv file
