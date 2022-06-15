@@ -27,7 +27,7 @@ class Wedding:
     def query_max_seats(self):
         while True:
             # seats = input("Please enter the maximum number of people per table: ")
-            seats = 6#
+            seats = 7#
 
             try: seats = int(seats)
             except: print("please enter an integer")
@@ -43,9 +43,11 @@ class Wedding:
         csv_reader = csv.reader(csv_file)
         for name, age, spouse in csv_reader:
             # print(name, age, spouse)
-
-            self.add_person(Person(name, age, spouse))
             if name == "NAME": continue
+            self.add_person(Person(name, age, spouse))
+        # for person in self.unassigned_people:
+        #     print(person.name)
+
 
     def round_up(self, numerator, divisor):
         return int((numerator // divisor) + (numerator % divisor > 0))
@@ -73,24 +75,19 @@ class Wedding:
             for person in couple:
                 for table in self.tables:
                     if person in self.unassigned_people:
-                        if table.max_seats >= len(table.people) + 1:
-                            self.remove_person(person)                                
+                        if table.max_seats >= len(table.people) + 2:
+                            self.remove_person(person)
                             table.add_person(person)
-                        
+
+    def assign_singles_to_tables(self):
+        for person in self.unassigned_people:
+            for table in self.tables:
+                if table.max_seats > len(table.people):
+                    if person in self.unassigned_people:
+                        self.remove_person(person)
+                        table.add_person(person)
+
+    def test(self):
         for table in self.tables:
             for person in table.people:
-                print(person.name)
-
-
-
-
-
-
-    # def assign_couples_to_tables(self):
-    #     for table in self.tables:
-    #         if table.max_seats >= len(table.people) + 1:
-    #             for couple in self.couples:
-    #                 self.remove_couple(couple)
-    #                 for person in couple:
-    #                     table.add_person(person)
-            # print(table)
+                print(person.name, ":", table.id)
