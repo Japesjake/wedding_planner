@@ -1,4 +1,5 @@
 import csv
+import math
 from Person import *
 from Table import *
 
@@ -7,7 +8,6 @@ class Wedding:
         self.unassigned_people = []
         self.couples = []
         self.tables = []
-        self.max_seats = 0
     def add_table(self, table):
         self.tables.append(table)
     def remove_table(self, table):
@@ -27,7 +27,7 @@ class Wedding:
     def query_max_seats(self):
         while True:
             # seats = input("Please enter the maximum number of people per table: ")
-            seats = 7#
+            seats = 8#
 
             try: seats = int(seats)
             except: print("please enter an integer")
@@ -42,42 +42,37 @@ class Wedding:
         csv_file = open('input.csv', 'r')
         csv_reader = csv.reader(csv_file)
         for name, age, spouse in csv_reader:
-            # print(name, age, spouse)
             if name == "NAME": continue
             self.add_person(Person(name, age, spouse))
-        # for person in self.unassigned_people:
-        #     print(person.name)
 
 
     def round_up(self, numerator, divisor):
         return int((numerator // divisor) + (numerator % divisor > 0))
 
-    # Creates tables
+
+
     def create_tables(self):
         num_people = len(self.unassigned_people)
         tables = self.round_up(num_people, self.max_seats)
         for i in range(tables):
             table = Table(self.max_seats, i)
             self.add_table(table)
-            # print(table.id, ":", table.max_seats)
 
     def match_couples(self):
         for person1 in self.unassigned_people:
             for person2 in self.unassigned_people:
                 if person1.name == person2.spouse:
                     self.add_couple((person1, person2))
-        # for couple in self.couples:
-        #     for person in couple:
-        #         print(person.name)
 
     def assign_couples_to_tables(self):
         for couple in self.couples:
             for person in couple:
                 for table in self.tables:
                     if person in self.unassigned_people:
-                        if table.max_seats >= len(table.people) + 2:
+                        if table.max_seats > len(table.people) + 1:
                             self.remove_person(person)
                             table.add_person(person)
+
 
     def assign_singles_to_tables(self):
         for person in self.unassigned_people:
@@ -86,6 +81,7 @@ class Wedding:
                     if person in self.unassigned_people:
                         self.remove_person(person)
                         table.add_person(person)
+
 
     def test(self):
         for table in self.tables:
