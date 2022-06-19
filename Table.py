@@ -11,4 +11,3 @@ class Table():
     def is_full(self, table):
         if len(table.people) >= self.max_seats: return True
         return False
-    

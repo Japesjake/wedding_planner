@@ -27,7 +27,7 @@ class Wedding:
     def query_max_seats(self):
         while True:
             # seats = input("Please enter the maximum number of people per table: ")
-            seats = 8#
+            seats = 7#
 
             try: seats = int(seats)
             except: print("please enter an integer")
@@ -63,15 +63,23 @@ class Wedding:
             for person2 in self.unassigned_people:
                 if person1.name == person2.spouse:
                     self.add_couple((person1, person2))
+    def is_even(self, number):
+        if number % 2 == 0: return True
 
     def assign_couples_to_tables(self):
+        even = self.is_even(self.max_seats)
         for couple in self.couples:
             for person in couple:
                 for table in self.tables:
                     if person in self.unassigned_people:
-                        if table.max_seats > len(table.people) + 1:
+                        if even and table.max_seats >= len(table.people):
                             self.remove_person(person)
                             table.add_person(person)
+                        elif not even and table.max_seats >= len(table.people) + 2:
+                            self.remove_person(person)
+                            table.add_person(person)
+                            
+                            
 
 
     def assign_singles_to_tables(self):
