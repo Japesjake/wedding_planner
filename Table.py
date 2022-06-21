@@ -8,6 +8,3 @@ class Table():
         self.open = False
     def add_person(self, person):
         self.people.append(person)
-    def is_full(self, table):
-        if len(table.people) >= self.max_seats: return True
-        return False

@@ -11,7 +11,8 @@ wedding.match_couples()
 wedding.assign_couples_to_tables()
 wedding.assign_singles_to_tables()
 
-wedding.test()
+# wedding.test_people()
+wedding.test_seats()
 # to do #
 
 # add more entries to input.csv file
