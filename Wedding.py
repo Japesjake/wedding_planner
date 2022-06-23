@@ -1,4 +1,6 @@
 import csv
+import random
+from decimal import ROUND_UP
 from Person import *
 from Table import *
 
@@ -7,6 +9,7 @@ class Wedding:
         self.unassigned_people = []
         self.couples = []
         self.tables = []
+        self.possible_seats = []
     def add_table(self, table):
         self.tables.append(table)
     def remove_table(self, table):
@@ -21,6 +24,11 @@ class Wedding:
         self.couples.append(couple)
     def remove_couple(self, couple):
         self.couples.remove(couple)
+    def make_add_table(self, seats, id):
+        table = Table(seats, id)
+        self.add_table(table)
+    def add_possible_seats(self, seats):
+        self.possible_seats.append(seats)
 
     # asks for max seats per table.
     def query_max_seats(self):
@@ -48,29 +56,30 @@ class Wedding:
     def round_up(self, numerator, divisor):
         return int((numerator // divisor) + (numerator % divisor > 0))
 
-    def is_more_required(self, num1, num2, num3):
-        if self.unassigned_people - num > num - 2:
-            return True
+    # Returns a combination of seat amounts per table,
+    # which add up to the amount of people.
+    def make_poss_seats(self):
+        people = len(self.unassigned_people)
+        max = self.max_seats
+        r = range(max - 2, max + 1)
+        seats_list = []
+        max_tables = self.round_up(people, max)
+        while sum(seats_list) != people:
+            if max_tables == len(seats_list):
+                seats_list = []            
+            ran = random.randint(max - 2, max)
+            seats_list.append(ran)
+        return seats_list
 
     def create_tables(self):
-        people = len(self.unassigned_people)
-        seats = self.max_seats
-        tables = self.round_up(people, seats)
-        for i in range(self.max_seats - 2, self.max_seats):
-            if self.is_more_required(i):
-                for j in range(self.max_seats - 2, self.max_seats):
-                    if self.is_more_required(j):
-                        for k in range(self.max_seats - 2, self.max_seats):
-                            if i + j + k == people:
-                                for id in range(tables):
-                                    table = Table(, id)
-                                    self.add_table(table)
-
-
-
-        # for i in range(tables):
-        #     table = Table(self.seats, i)
-        #     self.add_table(table)
+        id = 0
+        numbers = self.make_poss_seats()
+        # print(numbers)
+        for seats in numbers:
+            table = Table(seats, id)
+            self.add_table(table)
+            # print(table.seats)
+            id += 1
 
     def match_couples(self):
         for person1 in self.unassigned_people:
@@ -80,36 +89,35 @@ class Wedding:
                     
     def is_even(self, number):
         if number % 2 == 0: return True
+        else: return False
 
     def assign_couples_to_tables(self):
-        even = self.is_even(self.max_seats)
         for couple in self.couples:
             for person in couple:
                 for table in self.tables:
+                    even = self.is_even(table.seats)
                     if person in self.unassigned_people:
                         if even and table.seats >= len(table.people):
                             self.remove_person(person)
                             table.add_person(person)
-                        elif not even and table.max_seats >= len(table.people) + 2:
+                        elif not even and table.seats >= len(table.people) + 1:
                             self.remove_person(person)
                             table.add_person(person)
-                            
-                            
+                        # print(person.name, table.id)
 
+    # def assign_couples_to_tables
 
     def assign_singles_to_tables(self):
         for person in self.unassigned_people:
             for table in self.tables:
-                if table.max_seats > len(table.people):
+                actual_people = len(table.people)
+                if table.seats > actual_people:
                     if person in self.unassigned_people:
                         self.remove_person(person)
                         table.add_person(person)
-
 
     def test_people(self):
         for table in self.tables:
             for person in table.people:
                 print(person.name, ":", table.id)
-
-    def test_seats(self):
 

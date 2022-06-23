@@ -1,8 +1,8 @@
 from Wedding import *
 
 class Table():
-    def __init__(self, max_seats, id):
-        self.max_seats = max_seats
+    def __init__(self, seats, id):
+        self.seats = seats
         self.people = []
         self.id = id
         self.open = False
