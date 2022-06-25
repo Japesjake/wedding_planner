@@ -27,7 +27,7 @@ class Wedding:
     def query_max_seats(self):
         while True:
             # seats = input("Please enter the maximum number of people per table: ")
-            seats = 7#
+            seats = 6#
 
             try: seats = int(seats)
             except: print("please enter an integer")
