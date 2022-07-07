@@ -3,11 +3,14 @@
 class Table():
     def __init__(self, max_seats, id):
         self.max_seats = max_seats
-        self.people = []
+        self.num_seats = 0
+        self.groups = []
         self.id = id
         self.open = False
-    def add_person(self, person):
-        self.people.append(person)
-    def is_full(self, table):
-        if len(table.people) >= self.max_seats: return True
-        return False
+    def add_group(self, group):
+        self.groups.append(group)
+    def update_number_of_seats(self):
+        for group in self.groups:
+            number = 0
+            number += group.number
+        self.num_seats = number
