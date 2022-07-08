@@ -7,10 +7,18 @@ wedding.max_seats = wedding.query_max_seats()
 # if wedding.max_seats <= 1: continue
 wedding.start()
 wedding.create_groups_from_csv()
-wedding.update_numbers_in_groups()
-wedding.create_tables()
+while True:
+    wedding.create_tables()
+    wedding.assign_groups_to_tables()
+    if True:
+    # if wedding.return_total_num_unassigned_people() == 0:
+        break
 
-wedding.test_groups()
+
+# wedding.create_tables()
+
+# wedding.test_groups()
 
 # wedding.test_tables()
+# wedding.full_test()
 # wedding.test()
