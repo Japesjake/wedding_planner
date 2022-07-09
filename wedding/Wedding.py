@@ -1,6 +1,5 @@
 import csv
 import random
-import copy
 from person.Person import *
 from table.Table import *
 from group.Group import *
@@ -16,6 +15,8 @@ class Wedding:
         self.unassigned_groups.append(group)
     def remove_group(self, group):
         self.unassigned_groups.remove(group)
+
+    ### UTILITY METHODS ###
 
     def return_num_people_at_table(self, table):
         total = 0
@@ -36,11 +37,19 @@ class Wedding:
             total += len(group.people)
         return total
 
+    def return_total_num_seats(self):
+        num = 0
+        for table in self.tables:
+            num += table.max_seats
+        return num
+
     def round_up(self, numerator, divisor):
         return int((numerator // divisor) + (numerator % divisor > 0))
 
     def is_everyone_assigned(self):
         if self.return_total_num_unassigned_people() == 0: return True
+
+    ### MAIN METHODS ##
 
     # gets user input for max seats per table.
     def query_max_seats(self):
@@ -58,7 +67,7 @@ class Wedding:
     def query_min_seats(self):
         while True:
             # seats = input("Please enter the MINIMUM number of seats per table: ")
-            seats = 7
+            seats = 5
 
             try: seats = int(seats)
             except: print("please enter an integer.")
@@ -88,12 +97,16 @@ class Wedding:
         random.shuffle(self.unassigned_groups)
 
     def create_tables(self):
-        self.tables = []
         self.unassigned_people = self.return_total_num_unassigned_people()
         num_tables = self.round_up(self.unassigned_people, self.max_seats)
-        for id in range(1, num_tables + 1):
-            seats = random.randint(self.max_seats - 2, self.max_seats)
-            self.add_table(Table(seats, id))
+        while True:
+            self.tables = []
+            for id in range(1, num_tables + 1):
+                seats = random.randint(self.min_seats, self.max_seats)
+                self.add_table(Table(seats, id))
+            total_num_seats = self.return_total_num_seats()
+            if total_num_seats > self.unassigned_people: continue
+            elif total_num_seats == self.unassigned_people: break
 
     def assign_groups_to_tables(self):
         self.unassigned_people_before = self.return_total_num_unassigned_people()
@@ -114,10 +127,7 @@ class Wedding:
     
     def test_tables(self):
         for table in self.tables:
-            num = 0
-            for group in table.groups:
-                num += len(group.people)
-            print('table ', table.id, 'has ', num, ' people')
+            print('table ', table.id, 'has ', table.max_seats, ' seats')
 
     def full_test(self):
         for table in self.tables:
