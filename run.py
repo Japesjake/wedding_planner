@@ -1,24 +1,25 @@
 from wedding.Wedding import *
+import copy
 
 wedding = Wedding()
 
-# while True:
 wedding.max_seats = wedding.query_max_seats()
-# if wedding.max_seats <= 1: continue
+wedding.max_seats = wedding.query_min_seats()
+
 wedding.start()
-wedding.create_groups_from_csv()
+
+# is_run = False
 while True:
+    # if is_run: wedding.unassigned_people = wedding.unassigned_people_before
+    # else: wedding.unassigned_people = wedding.return_total_num_unassigned_people()
+    wedding.create_groups_from_csv()
     wedding.create_tables()
     wedding.assign_groups_to_tables()
-    if True:
-    # if wedding.return_total_num_unassigned_people() == 0:
+    # is_run = True
+    if wedding.is_everyone_assigned():
         break
-
-
-# wedding.create_tables()
 
 # wedding.test_groups()
 
-# wedding.test_tables()
-# wedding.full_test()
-# wedding.test()
+wedding.test_tables()
+wedding.full_test()
