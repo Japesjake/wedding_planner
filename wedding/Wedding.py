@@ -49,6 +49,23 @@ class Wedding:
     def is_everyone_assigned(self):
         if self.return_total_num_unassigned_people() == 0: return True
 
+#
+    def return_sorted_groups(self):
+        groups = list(self.unassigned_groups)
+        groups2 = list(self.unassigned_groups)
+        groups_output = []
+        for group in groups:
+            bools = []
+            for group2 in groups2:
+                if group != group2:
+                    if len(group.people) >= len(group2.people): bools.append(True)
+                    else: bools.append(False)
+            if all(bools):
+                groups_output.append(group)
+                groups2.remove(group)
+        return groups_output
+#
+
     ### MAIN METHODS ##
 
     # gets user input for max seats per table.
@@ -95,6 +112,14 @@ class Wedding:
                 person = Person(name)
                 group.add_person(person)
         random.shuffle(self.unassigned_groups)
+        # self.unassigned_groups = self.return_sorted_groups()
+        
+        #
+        for group in self.unassigned_groups:
+            print("group ", group.id, )
+            for person in group.people:
+                print(person.name)
+        #
 
     def create_tables(self):
         self.unassigned_people = self.return_total_num_unassigned_people()
@@ -113,9 +138,13 @@ class Wedding:
         for table in self.tables:
             for group in self.unassigned_groups:
                 people = self.return_num_people_at_table(table)
-                if len(group.people) + people <= table.max_seats and group in self.unassigned_groups:
+                if len(group.people) + people < table.max_seats and group in self.unassigned_groups:
                     table.add_group(group)
                     self.remove_group(group)
+                if len(group.people) + people == table.max_seats and group in self.unassigned_groups:
+                    table.add_group(group)
+                    self.remove_group(group)
+                    break
         print("unassigned: ", self.return_total_num_unassigned_people())
         print("assigned: ", self.return_total_num_assigned_people())
 
