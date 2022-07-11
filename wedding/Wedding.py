@@ -35,6 +35,8 @@ class Wedding:
         total = 0
         for group in self.unassigned_groups:
             total += len(group.people)
+        for group in self.unassigned_singles:
+            total += len(group.people)
         return total
 
     def return_total_num_seats(self):
@@ -48,23 +50,6 @@ class Wedding:
 
     def is_everyone_assigned(self):
         if self.return_total_num_unassigned_people() == 0: return True
-
-#
-    def return_sorted_groups(self):
-        groups = list(self.unassigned_groups)
-        groups2 = list(self.unassigned_groups)
-        groups_output = []
-        for group in groups:
-            bools = []
-            for group2 in groups2:
-                if group != group2:
-                    if len(group.people) >= len(group2.people): bools.append(True)
-                    else: bools.append(False)
-            if all(bools):
-                groups_output.append(group)
-                groups2.remove(group)
-        return groups_output
-#
 
     ### MAIN METHODS ##
 
@@ -112,14 +97,25 @@ class Wedding:
                 person = Person(name)
                 group.add_person(person)
         random.shuffle(self.unassigned_groups)
-        # self.unassigned_groups = self.return_sorted_groups()
+
+    def group_singles(self):
+        self.unassigned_singles = []
+        self.unassigned_groups_static = list(self.unassigned_groups)
+        for group in self.unassigned_groups_static:
+            if len(group.people) == 1:
+                self.unassigned_groups.remove(group)
+                self.unassigned_singles.append(group)
         
-        #
         for group in self.unassigned_groups:
             print("group ", group.id, )
             for person in group.people:
                 print(person.name)
-        #
+
+        for group in self.unassigned_singles:
+            print("group ", group.id, )
+            for person in group.people:
+                print(person.name)        
+        
 
     def create_tables(self):
         self.unassigned_people = self.return_total_num_unassigned_people()
@@ -133,18 +129,26 @@ class Wedding:
             if total_num_seats > self.unassigned_people: continue
             elif total_num_seats == self.unassigned_people: break
 
-    def assign_groups_to_tables(self):
-        self.unassigned_people_before = self.return_total_num_unassigned_people()
+    def assign_groups(self):
         for table in self.tables:
             for group in self.unassigned_groups:
                 people = self.return_num_people_at_table(table)
-                if len(group.people) + people < table.max_seats and group in self.unassigned_groups:
+                if len(group.people) + people <= table.max_seats and group in self.unassigned_groups:
                     table.add_group(group)
                     self.remove_group(group)
-                if len(group.people) + people == table.max_seats and group in self.unassigned_groups:
+
+    def assign_singles(self):
+        for table in self.tables:
+            for group in self.unassigned_singles:
+                people = self.return_num_people_at_table(table)
+                if len(group.people) + people <= table.max_seats and group in self.unassigned_singles:
                     table.add_group(group)
-                    self.remove_group(group)
-                    break
+                    self.unassigned_singles.remove(group)
+
+
+    def assign_groups_to_tables(self):
+        self.assign_groups()
+        self.assign_singles()
         print("unassigned: ", self.return_total_num_unassigned_people())
         print("assigned: ", self.return_total_num_assigned_people())
 

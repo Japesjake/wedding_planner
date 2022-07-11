@@ -9,10 +9,13 @@ wedding.start()
 
 while True:
     wedding.create_groups_from_csv()
+    wedding.group_singles()
     wedding.create_tables()
 
     wedding.assign_groups_to_tables()
     if wedding.is_everyone_assigned():
+    #     pass
+    # if True:
         break
 
 # wedding.test_groups()
