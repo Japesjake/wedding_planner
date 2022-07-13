@@ -106,15 +106,15 @@ class Wedding:
                 self.unassigned_groups.remove(group)
                 self.unassigned_singles.append(group)
         
-        for group in self.unassigned_groups:
-            print("group ", group.id, )
-            for person in group.people:
-                print(person.name)
+        # for group in self.unassigned_groups:
+        #     print("group ", group.id, )
+        #     for person in group.people:
+        #         print(person.name)
 
-        for group in self.unassigned_singles:
-            print("group ", group.id, )
-            for person in group.people:
-                print(person.name)        
+        # for group in self.unassigned_singles:
+        #     print("group ", group.id, )
+        #     for person in group.people:
+        #         print(person.name)        
         
 
     def create_tables(self):
@@ -149,8 +149,8 @@ class Wedding:
     def assign_groups_to_tables(self):
         self.assign_groups()
         self.assign_singles()
-        print("unassigned: ", self.return_total_num_unassigned_people())
-        print("assigned: ", self.return_total_num_assigned_people())
+        # print("unassigned: ", self.return_total_num_unassigned_people())
+        # print("assigned: ", self.return_total_num_assigned_people())
 
     def test_groups(self):
         for group in self.groups:
