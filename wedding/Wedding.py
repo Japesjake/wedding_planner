@@ -7,14 +7,12 @@ from group.Group import *
 class Wedding:
     def __init__(self):
         self.unassigned_groups = []
+        self.unassigned_singles = []
         self.tables = []
-        self.is_grouped = False
     def add_table(self, table):
         self.tables.append(table)
     def add_group(self, group):
         self.unassigned_groups.append(group)
-    def remove_group(self, group):
-        self.unassigned_groups.remove(group)
 
     ### UTILITY METHODS ###
 
@@ -45,32 +43,18 @@ class Wedding:
             num += table.max_seats
         return num
 
-    def round_up(self, numerator, divisor):
-        return int((numerator // divisor) + (numerator % divisor > 0))
-
     def is_everyone_assigned(self):
         if self.return_total_num_unassigned_people() == 0: return True
 
+    def round_up(self, numerator, divisor):
+        return int((numerator // divisor) + (numerator % divisor > 0))
+
     ### MAIN METHODS ##
 
-    # gets user input for max seats per table.
-    def query_max_seats(self):
+    # gets user input for maximum or minimum (depends on string) seats per table.
+    def query_for_seats(self, string):
         while True:
-            # seats = input("Please enter the MAXIMUM number of seats per table: ")
-            seats = 7
-
-            try: seats = int(seats)
-            except: print("please enter an integer.")
-            if seats > 0:
-                if isinstance(seats, int): return seats
-            else: print("Please enter a positive integer.")
-    
-        # gets user input for minimum seats per table.
-    def query_min_seats(self):
-        while True:
-            # seats = input("Please enter the MINIMUM number of seats per table: ")
-            seats = 5
-
+            seats = input(f"Please enter the {string} number of seats per table: ")
             try: seats = int(seats)
             except: print("please enter an integer.")
             if seats > 0:
@@ -104,18 +88,7 @@ class Wedding:
         for group in self.unassigned_groups_static:
             if len(group.people) == 1:
                 self.unassigned_groups.remove(group)
-                self.unassigned_singles.append(group)
-        
-        # for group in self.unassigned_groups:
-        #     print("group ", group.id, )
-        #     for person in group.people:
-        #         print(person.name)
-
-        # for group in self.unassigned_singles:
-        #     print("group ", group.id, )
-        #     for person in group.people:
-        #         print(person.name)        
-        
+                self.unassigned_singles.append(group)     
 
     def create_tables(self):
         self.unassigned_people = self.return_total_num_unassigned_people()
@@ -129,42 +102,42 @@ class Wedding:
             if total_num_seats > self.unassigned_people: continue
             elif total_num_seats == self.unassigned_people: break
 
-    def assign_groups(self):
+    def assign_groups_from_list(self, list):
         for table in self.tables:
-            for group in self.unassigned_groups:
+            for group in list:
                 people = self.return_num_people_at_table(table)
-                if len(group.people) + people <= table.max_seats and group in self.unassigned_groups:
+                if len(group.people) + people <= table.max_seats and group in list:
                     table.add_group(group)
-                    self.remove_group(group)
-
-    def assign_singles(self):
-        for table in self.tables:
-            for group in self.unassigned_singles:
-                people = self.return_num_people_at_table(table)
-                if len(group.people) + people <= table.max_seats and group in self.unassigned_singles:
-                    table.add_group(group)
-                    self.unassigned_singles.remove(group)
-
+                    list.remove(group)
 
     def assign_groups_to_tables(self):
-        self.assign_groups()
-        self.assign_singles()
-        # print("unassigned: ", self.return_total_num_unassigned_people())
-        # print("assigned: ", self.return_total_num_assigned_people())
-
-    def test_groups(self):
-        for group in self.groups:
-            print(group.id)
-            for person in group.people:
-                print(person.name)
+        self.assign_groups_from_list(self.unassigned_groups)
+        self.assign_groups_from_list(self.unassigned_singles)
     
-    def test_tables(self):
+    def print_tables(self):
         for table in self.tables:
             print('table ', table.id, 'has ', table.max_seats, ' seats')
 
-    def full_test(self):
+    def print_names(self):
         for table in self.tables:
             print(table.id)
             for group in table.groups:
                 for person in group.people:
                     print(person.name)
+
+    # Testing Methods #
+
+    def print_groups(self):
+        for group in self.unassigned_groups:
+            print("group ", group.id, )
+            for person in group.people:
+                print(person.name)
+
+        for group in self.unassigned_singles:
+            print("group ", group.id, )
+            for person in group.people:
+                print(person.name)   
+
+    def print_numbers(self):
+        print("unassigned: ", self.return_total_num_unassigned_people())
+        print("assigned: ", self.return_total_num_assigned_people())
