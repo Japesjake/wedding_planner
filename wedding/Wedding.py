@@ -55,10 +55,12 @@ class Wedding:
     def query_for_seats(self, string):
         while True:
             seats = input(f"Please enter the {string} number of seats per table: ")
-            try: seats = int(seats)
-            except: print("please enter an integer.")
-            if seats > 0:
-                if isinstance(seats, int): return seats
+            try: 
+                seats = int(seats) 
+            except: 
+                print("Please enter an integer.")
+                continue
+            if seats > 0: return seats 
             else: print("Please enter a positive integer.")
 
     def start(self):

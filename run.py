@@ -2,7 +2,7 @@ from wedding.Wedding import *
 import time
 
 wedding = Wedding()
-
+print(10)
 wedding.max_seats = wedding.query_for_seats("MAX")
 wedding.min_seats = wedding.query_for_seats("MINIMUM")
 # wedding.max_seats = 8
